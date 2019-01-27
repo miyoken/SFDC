@@ -1,0 +1,32 @@
+public class CommonUtil {
+    //改行メソッド
+    public static String setAutoBreak(String value, Integer posLength ){
+        //文字列valueが空もしくは指定文字数に達していない場合、そのまま文字列valueを返す
+        if(value == null || value.length() <= posLength) return value;
+            //文字列valueの改行を文字列＜￥ＢＲ＞に置換
+            value = value.replaceAll('\r\n', '＜￥ＢＲ＞');
+            //文字列＜￥ＢＲ＞毎に文字列valueを切り分け、リストvaluesに変換
+            List<String> values = value.split('＜￥ＢＲ＞');
+            //文字列rtnValueを宣言
+            String rtnValue = '';
+                //もしリストvaluesのレコードサイズが0より大きい場合
+                if(values.size() > 0){
+                    //初期値が0の整数型変数iを宣言、変数iが「リストvaluesのレコードサイズ」になるまで、プラス1でループ
+                    for(Integer i = 0; i < values.size(); i++){
+                        //初期値が0の整数型変数jを宣言
+                        Integer j = 0;
+                        //変数jが「リストvaluesの中の任意レコードサイズ割る指定文字数の結果」（レコードに指定文字数何行あるかを計算している）になるまで、プラス1でループ
+                        for(j = 0; j < (values[i].length() / posLength); j++){
+                            //リストvaluesの中の任意レコードを文字列rtnValueに追加
+                            rtnValue += values[i].substring(posLength*j,posLength*(j+1)) + '＜￥ＢＲ＞';
+                        }
+                        //リストvaluesの中の全レコードを文字列rtnValueに追加
+                        rtnValue += values[i].substring(posLength*j,values[i].length()) + '＜￥ＢＲ＞';
+                    }
+                }
+            //文字列rtnValueにある文字列＜￥ＢＲ＞を改行に置換
+            rtnValue = rtnValue.replaceAll('＜￥ＢＲ＞', '\r\n');
+            //文字列rtnValueを返す
+            return rtnValue;
+    }
+}
