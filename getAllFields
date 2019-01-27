@@ -1,0 +1,16 @@
+public with sharing class Util{
+    static static public String getAllFields(String obj){
+        String strFields='';
+        Schema.SObjectType sobjType = Schema.getGlobalDescribe().get(obj);
+        Map<String, Schema.SObjectField> fmap = sobjType.getDescribe().fields.getMap();
+        for (String fieldKey : fmap.keySet()) {
+            Schema.SObjectField f = fmap.get(fieldKey);
+            if(strFields== ''){
+                strFields = fieldKey;
+            }else{
+                strFields +=  ',' + fieldKey;
+            }
+        }
+        return strFields;
+    }
+}
