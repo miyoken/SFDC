@@ -1,0 +1,31 @@
+/**
+* @author ACK
+* @date 2019/02/06
+* @param なし
+* @description 日付関連ユーティリティテスト
+* @return なし
+*/
+/** 履歴
+* 2019/02/06 新規
+*/
+@isTest
+public class DateUtilsTest {
+    @isTest
+    static void test1(){
+        Test.startTest();
+        Date result1 = DateUtils.toDate('2019-01-01');
+        Date result2 = DateUtils.toDate('2019年01月01日');
+        Date result3 = DateUtils.toDate('平成31年01月01日');
+        
+        System.assertEquals(result1, result2);
+        System.assertEquals(result1, result3);
+        
+        Date result4 = DateUtils.toDate('平成元年01月01日');
+        System.assertEquals(Date.newInstance(1989, 1, 1), result4);
+        
+        Date result5 = DateUtils.toDate('123456789');
+        System.assertEquals(null, result5);
+        
+        Test.stopTest();
+    }
+}
