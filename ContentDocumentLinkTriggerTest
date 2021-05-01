@@ -1,0 +1,35 @@
+@isTest
+public class ContentDocumentLinkTriggerTest {
+  @isTest
+    static private void test(){
+    Proposal__c p = new Proposal__c(
+          Name='TEST'
+        );
+        insert p;
+
+        MKDeveloperEvent__c m = new MKDeveloperEvent__c();
+        insert m;
+        
+        ContentVersion cv = new ContentVersion();
+        cv.title = 'test';      
+        cv.PathOnClient ='test';           
+        cv.VersionData =Blob.valueOf('test'); 
+        insert cv;
+
+        List<ContentDocument> documents = [SELECT Id, Title, LatestPublishedVersionId  FROM ContentDocument];
+        //create ContentDocumentLink  record 
+        ContentDocumentLink cdl = New ContentDocumentLink(
+            LinkedEntityId = p.id
+            ,ContentDocumentId = documents[0].Id
+            ,shareType = 'V'
+        );
+        insert cdl;
+
+        ContentDocumentLink cdl2 = New ContentDocumentLink(
+            LinkedEntityId = m.id
+            ,ContentDocumentId = documents[0].Id
+            ,shareType = 'V'
+        );
+        insert cdl2;
+    }
+}
