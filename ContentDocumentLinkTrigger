@@ -1,0 +1,34 @@
+trigger ContentDocumentLinkTrigger on ContentDocumentLink (before insert) {
+    Set<ID> ids = new Set<ID>();
+    for(ContentDocumentLink item : Trigger.new){
+        ids.add(item.LinkedEntityId);
+    }
+
+    //行動・提案起案の添付フラグをONにする
+    List<Event> updList = new List<Event>();
+    for(Event item : [SELECT Attached__c FROM Event WHERE Attached__c=FALSE AND ID IN :ids]){
+        item.Attached__c = TRUE;
+        updList.add(item);
+    }
+    if(!updList.isEmpty()){
+        update updList;
+    }
+
+    List<MKDeveloperEvent__c > updList2 = new List<MKDeveloperEvent__c >();
+    for(MKDeveloperEvent__c item : [SELECT Attached__c FROM MKDeveloperEvent__c  WHERE Attached__c=FALSE AND ID IN :ids]){
+        item.Attached__c = TRUE;
+        updList2.add(item);
+    }
+    if(!updList2.isEmpty()){
+        update updList2;
+    }
+
+    List<Proposal__c> updList3 = new List<Proposal__c>();
+    for(Proposal__c item : [SELECT Attached__c FROM Proposal__c WHERE Attached__c=FALSE AND ID IN :ids]){
+        item.Attached__c = TRUE;
+        updList3.add(item);
+    }
+    if(!updList3.isEmpty()){
+        update updList3;
+    }
+}
